@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Smart-TTM — AI-Powered NCD Screening | คัดกรอง NCD ทางแพทย์แผนไทย</title>
+<meta name="description" content="Open-source NCD screening platform powered by Thai Traditional Medicine wisdom. โดย AI for Public Good Foundation">
+<style>
+:root{
+  --green-900:#0d3b1e; --green-700:#14532d; --green-600:#16a34a; --green-500:#22c55e;
+  --teal:#0d9488; --amber:#f59e0b; --red:#dc2626; --ink:#111827; --muted:#6b7280;
+  --bg:#f0fdf4; --card:#ffffff; --radius:16px;
+  --shadow:0 4px 24px rgba(13,59,30,.08);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Sarabun','Segoe UI',Tahoma,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+
+/* ===== Navbar ===== */
+nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.85);backdrop-filter:blur(12px);border-bottom:1px solid #e5e7eb}
+.nav-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:14px 24px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;color:var(--green-700)}
+.logo-icon{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--green-600),var(--teal));display:flex;align-items:center;justify-content:center;font-size:20px}
+.nav-links{display:flex;gap:22px;font-size:14px}
+.nav-links a{color:var(--muted);text-decoration:none;font-weight:600}
+.nav-links a:hover{color:var(--green-600)}
+.badge-open{background:#ecfdf5;color:var(--green-700);border:1px solid #a7f3d0;padding:4px 12px;border-radius:999px;font-size:12px;font-weight:700}
+@media(max-width:640px){.nav-links{display:none}}
+
+/* ===== Hero ===== */
+.hero{background:linear-gradient(135deg,var(--green-900) 0%,var(--green-700) 55%,var(--teal) 100%);color:#fff;padding:72px 24px 90px;text-align:center;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 80% 20%,rgba(255,255,255,.12),transparent 45%)}
+.hero-inner{max-width:880px;margin:0 auto;position:relative;z-index:1}
+.hero h1{font-size:clamp(28px,4.5vw,44px);font-weight:800;letter-spacing:-.5px;margin-bottom:14px}
+.hero p.sub{font-size:clamp(15px,2vw,19px);opacity:.9;max-width:640px;margin:0 auto 28px}
+.hero-tags{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.tag{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);padding:6px 16px;border-radius:999px;font-size:13px;font-weight:600}
+
+/* ===== Layout ===== */
+.wrap{max-width:920px;margin:-46px auto 0;padding:0 20px 60px;position:relative;z-index:2}
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px;margin-bottom:22px;border:1px solid #e8f5e9}
+.card h2{font-size:19px;color:var(--green-700);display:flex;align-items:center;gap:8px;margin-bottom:18px}
+.step-num{width:28px;height:28px;border-radius:50%;background:var(--green-600);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:700}
+
+/* ===== Form ===== */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:560px){.grid2{grid-template-columns:1fr}}
+label{display:block;font-size:13px;font-weight:700;color:#374151;margin:12px 0 6px}
+input,select{width:100%;padding:11px 14px;border:1.5px solid #d1d5db;border-radius:10px;font-size:15px;font-family:inherit;background:#fff;transition:border .2s, box-shadow .2s}
+input:focus,select:focus{outline:none;border-color:var(--green-500);box-shadow:0 0 0 3px rgba(34,197,94,.15)}
+.chk{display:flex;align-items:center;gap:10px;padding:9px 4px;font-weight:500;color:#374151;font-size:14px;cursor:pointer}
+.chk input{width:18px;height:18px;accent-color:var(--green-600)}
+.hint{font-size:12px;color:var(--muted);margin-top:4px}
+
+/* Sliders */
+input[type=range]{padding:0;height:6px;border:none;background:#e5e7eb;border-radius:99px;appearance:none;-webkit-appearance:none}
+input[type=range]::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--green-600);border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.25);cursor:pointer}
+.slider-row{display:grid;grid-template-columns:1fr 46px;gap:12px;align-items:center}
+.slider-val{text-align:center;background:#ecfdf5;border-radius:8px;font-weight:800;color:var(--green-700);padding:6px 0}
+
+.btn{width:100%;background:linear-gradient(135deg,var(--green-600),var(--teal));color:#fff;border:none;padding:16px;border-radius:12px;font-size:17px;font-weight:800;cursor:pointer;transition:transform .15s, box-shadow .2s;font-family:inherit}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(22,163,74,.35)}
+.btn:active{transform:translateY(0)}
+.btn-pdf{background:linear-gradient(135deg,#2563eb,#1d4ed8);margin-top:14px}
+
+/* ===== Results ===== */
+.risk-high{color:var(--red);font-weight:800}.risk-mid{color:var(--amber);font-weight:800}.risk-low{color:var(--green-600);font-weight:800}
+.pill{display:inline-block;background:#ecfdf5;border:1px solid #a7f3d0;border-radius:999px;padding:3px 14px;margin:3px;font-size:13px;font-weight:700;color:var(--green-700)}
+.pill-warn{background:#fef3c2;border-color:#fde68a;color:#92400e}
+.warn{background:#fffbeb;border-left:5px solid var(--amber);padding:14px 16px;border-radius:10px;margin:14px 0;font-size:14px}
+.result-item{padding:10px 0;border-bottom:1px dashed #e5e7eb}
+.result-item:last-child{border:none}
+
+/* ===== Footer ===== */
+footer{background:var(--green-900);color:#d1fae5;text-align:center;padding:36px 20px;font-size:13px}
+footer .f-title{font-weight:800;color:#fff;font-size:15px;margin-bottom:6px}
+footer a{color:#6ee7b7;text-decoration:none}
+
+@media print{
+  body *{visibility:hidden}
+  #printArea,#printArea *{visibility:visible}
+}
+</style></head>
+<body>
+
+<nav><div class="nav-inner">
+ <div class="logo"><div class="logo-icon">🌿</div>Smart-TTM</div>
+ <div class="nav-links">
+   <a href="#screen">เริ่มคัดกรอง</a><a href="#about">เกี่ยวกับโครงการ</a>
+   <span class="badge-open">Open Source · MIT</span>
+ </div>
+</div></nav>
+
+<header class="hero"><div class="hero-inner">
+ <h1>คัดกรองโรค NCD ด้วยปัญญาแพทย์แผนไทย</h1>
+ <p class="sub">AI-Powered Preventive Health Screening · วิเคราะห์ธาตุเจ้าเรือน ประเมินสมดุลตรีโทษ และประเมินความเสี่ยงโรคเรื้อรัง ในแพลตฟอร์มเดียว</p>
+ <div class="hero-tags">
+  <span class="tag">🧬 ธาตุเจ้าเรือน</span><span class="tag">☯️ ตรีโทษ</span>
+  <span class="tag">🩺 NCD Screening</span><span class="tag">🥗 Personalized Diet</span>
+ </div>
+</div></header>
+
+<div class="wrap">
+
+<div class="warn" style="margin-top:0">⚠️ <b>ข้อจำกัดความรับผิดชอบ:</b> ระบบนี้เป็นเครื่องมือช่วยคัดกรองและให้ความรู้เบื้องต้น ไม่ใช่การวินิจฉัยโรค ไม่ใช่ Medical Device — โปรดปรึกษาแพทย์เสมอ (Human-in-the-loop)</div>
+
+<div class="card" id="screen">
+<h2><span class="step-num">1</span> ข้อมูลทั่วไป</h2>
+<label>ชื่อ-นามสกุล (ไม่บังคับ)</label>
+<input type="text" id="name" placeholder="แสดงในรายงานเท่านั้น ไม่ถูกบันทึก">
+<div class="hint">ตามหลัก PDPA: ข้อมูลนี้อยู่ในหน่วยความจำชั่วคราวและหายเมื่อปิดหน้าเว็บ</div>
+<label>เพศ</label>
+<select id="gender"><option value="">-- เลือก --</option><option>ชาย</option><option>หญิง</option><option>อื่น ๆ</option></select>
+<div class="grid2">
+ <div><label>วันเดือนปีเกิด *</label><input type="date" id="birth_date"></div>
+ <div><label>ส่วนสูง (ซม.) *</label><input type="number" id="height_cm" value="165"></div>
+</div>
+<div class="grid2">
+ <div><label>น้ำหนัก (กก.) *</label><input type="number" id="weight_kg" value="65"></div>
+ <div><label>ออกกำลังกาย (ครั้ง/สัปดาห์)</label><input type="number" id="exercise_weekly" value="2"></div>
+</div>
+<div class="grid2">
+ <div><label>ความดันตัวบน (mmHg)</label><input type="number" id="systolic_bp" placeholder="เช่น 120"></div>
+ <div><label>ความดันตัวล่าง (mmHg)</label><input type="number" id="diastolic_bp" placeholder="เช่น 80"></div>
+</div>
+<label>น้ำตาลในเลือดก่อนอาหาร (mg/dL)</label><input type="number" id="fasting_glucose" placeholder="ถ้าทราบ">
+</div>
+
+<div class="card">
+<h2><span class="step-num">2</span> แบบประเมินตรีโทษ <span style="font-size:12px;color:var(--muted);font-weight:400">(0 = ไม่มีเลย · 10 = มากที่สุด)</span></h2>
+<label>🔥 ปิตตะ — ร้อนใน ท้องผูก หงุดหงิด</label>
+<div class="slider-row"><input type="range" id="pitta" min="0" max="10" value="3" oninput="p1.value=this.value"><div class="slider-val"><output id="p1">3</output></div></div>
+<label>🌬️ วาตะ — แน่น เรอ นอนไม่หลับ</label>
+<div class="slider-row"><input type="range" id="vata" min="0" max="10" value="3" oninput="p2.value=this.value"><div class="slider-val"><output id="p2">3</output></div></div>
+<label>💧 เสมหะ — เหนื่อย เสมหะมาก น้ำหนักขึ้น</label>
+<div class="slider-row"><input type="range" id="kapha" min="0" max="10" value="3" oninput="p3.value=this.value"><div class="slider-val"><output id="p3">3</output></div></div>
+</div>
+
+<div class="card">
+<h2><span class="step-num">3</span> พฤติกรรมสุขภาพ</h2>
+<label class="chk"><input type="checkbox" id="smoker"> สูบบุหรี่</label>
+<label class="chk"><input type="checkbox" id="salty_food"> รับประทานเค็มจัด</label>
+<label class="chk"><input type="checkbox" id="fatty_food"> รับประทานมัน/ทอดบ่อย</label>
+<label class="chk"><input type="checkbox" id="family_history"> ประวัติเบาหวาน/ความดันในครอบครัว</label>
+<label class="chk"><input type="checkbox" id="pregnant"> ตั้งครรภ์</label>
+<label>ยาที่ใช้อยู่ (คั่นด้วยจุลภาค เช่น Warfarin, Aspirin)</label>
+<input id="current_meds" placeholder="ไม่มี">
+</div>
+
+<button class="btn" onclick="run()">🔍 เริ่มคัดกรอง</button>
+<div id="out"></div>
+<button class="btn btn-pdf" style="display:none" id="pdfBtn" onclick="savePDF()">🖨️ ดาวน์โหลด PDF (เลือก "Save as PDF")</button>
+</div>
+
+<footer id="about">
+ <div class="f-title">🌿 Smart-TTM Platform</div>
+ <p>พัฒนาเพื่อประโยชน์สาธารณะ โดย AI for Public Good Foundation · Open Source (MIT)</p>
+ <p>รองรับยุทธศาสตร์ BCG Economy และการยกระดับการแพทย์แผนไทยด้วย Data-Driven Approach</p>
+ <p style="margin-top:10px;opacity:.7">⚠️ ระบบช่วยตัดสินใจ (Decision Support) — แพทย์มีอำนาจตัดสินใจสุดท้ายเสมอ</p>
+</footer>
+
+<script>
+window.onerror=(m,s,l)=>console.error(m,s,l);
+function fail(msg){
+ out.innerHTML='<div class="card warn"><b>⚠️ ไม่สามารถประมวลผลได้:</b> '+msg+'</div>';
+ out.scrollIntoView({behavior:'smooth'});
+}
+async function run(){
+ if(location.protocol==='file:'){
+  fail('คุณเปิดไฟล์ HTML ตรง ๆ (file://) โปรดเปิดผ่าน <b>http://127.0.0.1:8000</b> ขณะที่รัน uvicorn อยู่');
+  return;
+ }
+ if(!document.getElementById('birth_date').value){ fail('กรุณาเลือกวันเดือนปีเกิด'); return; }
+ const v=id=>document.getElementById(id).value;
+ const meds=v('current_meds').split(',').map(s=>s.trim()).filter(Boolean);
+ const body={name:v('name')||null,gender:v('gender')||null,birth_date:v('birth_date'),height_cm:+v('height_cm'),weight_kg:+v('weight_kg'),
+  systolic_bp:v('systolic_bp')?+v('systolic_bp'):null,diastolic_bp:v('diastolic_bp')?+v('diastolic_bp'):null,
+  fasting_glucose:v('fasting_glucose')?+v('fasting_glucose'):null,
+  smoker:smoker.checked,salty_food:salty_food.checked,fatty_food:fatty_food.checked,
+  family_history_dm_ht:family_history.checked,exercise_weekly:+v('exercise_weekly'),
+  current_meds:meds,pregnant:pregnant.checked,
+  dosha_quiz:{pitta_like:+pitta.value,vata_like:+vata.value,kapha_like:+kapha.value}};
+ let r;
+ try{
+  const resp=await fetch('/api/screen',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  r=await resp.json();
+  if(!resp.ok){ fail(Array.isArray(r.detail)?r.detail.map(d=>d.msg).join(', '):r.detail); return; }
+ }catch(e){ fail('เชื่อมต่อเซิร์ฟเวอร์ไม่ได้ ตรวจสอบว่ารัน "python -m uvicorn app.main:app --port 8000" อยู่หรือไม่'); return; }
+ const rl=l=>l==='สูง'?'risk-high':l==='ปานกลาง'?'risk-mid':'risk-low';
+ const S=r.ncd_screening;
+ const who=`<span class="pill">อายุ ${r.age} ปี</span>${r.gender?` <span class="pill">เพศ ${r.gender}</span>`:''} <span class="pill">BMI ${r.bmi}</span>`;
+ out.innerHTML=`<div class="card"><h2 style="text-align:center">🌿 รายงานผลคัดกรอง NCD — Smart-TTM</h2>${r.name?`<p style="text-align:center;font-size:17px"><b>คุณ${r.name}</b></p>`:''}
+ <h2>🧬 ธาตุเจ้าเรือน: ${r.thai_element}</h2><p>${who}</p>
+ <p>ตรีโทษเด่น: <b>${r.tri_dosha.dominant_dosha}</b> (${r.tri_dosha.imbalance_level}) — ดัชนีสมดุล ${r.tri_dosha.balance_index}/10</p>
+ <h2 style="margin-top:18px">🩺 ความเสี่ยง NCD</h2>
+ <div class="result-item">เบาหวาน: <span class="${rl(S.diabetes.risk_level)}">${S.diabetes.risk_level}</span><br><small>${S.diabetes.ttm_mapping}</small></div>
+ <div class="result-item">ความดันโลหิตสูง: <span class="${rl(S.hypertension.risk_level)}">${S.hypertension.risk_level}</span><br><small>${S.hypertension.ttm_mapping}</small></div>
+ <div class="result-item">ไขมันในเลือดสูง: <span class="${rl(S.dyslipidemia.risk_level)}">${S.dyslipidemia.risk_level}</span><br><small>${S.dyslipidemia.ttm_mapping}</small></div>
+ <div class="warn">${r.flags.advice}</div></div>
+ <div class="card"><h2>🥗 คำแนะนำอาหาร (รส: ${r.recommendation.taste_guideline})</h2>
+ <ul style="padding-left:20px">${r.recommendation.diet_advice.map(d=>`<li>${d}</li>`).join('')}</ul>
+ <h2 style="margin-top:16px">🌱 สมุนไพรที่เหมาะ</h2>${Object.entries(r.recommendation.suggested_herbs).map(([n,e])=>`<span class="pill">${n}: ${e}</span>`).join('')||'ไม่มี'}
+ ${r.recommendation.contraindication_warnings.map(w=>`<div class="warn">🚫 <b>${w.herb}</b>: ${w.reason.join(', ')}</div>`).join('')}
+ </div><div class="warn">⚠️ ${r.disclaimer}</div>
+ <p style="font-size:12px;color:#666">วันที่ตรวจ: ${new Date().toLocaleDateString('th-TH')} | Smart-TTM © AI for Public Good Foundation</p>`;
+ window._resultHTML=out.innerHTML;
+ window._patientName=v('name');
+ pdfBtn.style.display='block';
+ out.scrollIntoView({behavior:'smooth'});
+}
+function savePDF(){
+ if(!window._resultHTML){ alert('กรุณาคัดกรองก่อน'); return; }
+ const w=window.open('','_blank','width=800,height=900');
+ if(!w){ alert('เบราว์เซอร์บล็อกหน้าต่างป๊อปอัพ กรุณาอนุญาต Pop-up แล้วลองใหม่'); return; }
+ w.document.write(`<!DOCTYPE html><html lang="th"><head><meta charset="utf-8">
+ <title>รายงานผลคัดกรอง Smart-TTM</title>
+ <style>
+  body{font-family:Tahoma,'Sarabun',sans-serif;color:#1e3a2a;max-width:720px;margin:20px auto;padding:16px}
+  .card{border:1px solid #9ccc9c;border-radius:8px;padding:14px;margin:12px 0;page-break-inside:avoid}
+  h2{color:#1b5e20} h3{color:#2e7d32}
+  .pill{display:inline-block;background:#e8f5e9;border:1px solid #a5d6a7;border-radius:14px;padding:2px 10px;margin:2px;font-size:13px}
+  .warn{background:#fff8e1;border-left:4px solid #f9a825;padding:10px;border-radius:6px;margin:10px 0}
+  .risk-high{color:#c62828;font-weight:700}.risk-mid{color:#ef6c00;font-weight:700}.risk-low{color:#2e7d32;font-weight:700}
+  .head{text-align:center;border-bottom:3px solid #1b5e20;padding-bottom:10px;margin-bottom:16px}
+  .head h1{color:#1b5e20;margin:0;font-size:22px}
+  .head p{margin:4px 0;font-size:12px;color:#555}
+ </style></head><body>
+ <div class="head"><h1>🌿 รายงานผลคัดกรอง NCD ทางแพทย์แผนไทย</h1>
+ <p>Smart-TTM | AI for Public Good Foundation (Open Source)</p>
+ ${(window._patientName?`<p style="font-size:16px"><b>ชื่อผู้รับการคัดกรอง:</b> ${window._patientName}</p>`:'')}
+ <p>วันที่ออกเอกสาร: ${new Date().toLocaleDateString('th-TH',{year:'numeric',month:'long',day:'numeric'})}</p></div>
+ ${window._resultHTML}
+ </body></html>`);
+ w.document.close();
+ setTimeout(()=>{ w.focus(); w.print(); }, 400);
+}
+</script>
+</body></html>
